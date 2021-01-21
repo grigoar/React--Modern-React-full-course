@@ -6,3 +6,4 @@
 package-lock.json
 /.parcel-cache/
 /jsx/node_modules/
+*.env
