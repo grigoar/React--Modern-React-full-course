@@ -17,7 +17,7 @@ class App extends React.Component {
 
     //initialize the state object
     //THIS IS THE ONLY TIME we do direct assignment to this.state
-    this.state = { lat: null };
+    this.state = { lat: null, errorMessage: "" };
     //async call
     window.navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -29,13 +29,38 @@ class App extends React.Component {
         //we did not !!!
         // this.state.lat = position.coords.latitude
       },
-      (err) => console.log(err)
+      (err) => {
+        this.setState({ errorMessage: err.message });
+      }
     );
+  }
+
+  componentDidMount() {
+    //initial data loading
+    console.log("My component was rendered to the screen");
+  }
+
+  componentDidUpdate() {
+    //any time that the component is reloading itself
+    console.log("My componetn was just updated - it rerendered");
+  }
+
+  componentWillUnmount() {
+    //is we want to do some cleanup when we don't to show the component anymore
   }
 
   //React says we have to define render!!
   render() {
-    return <div>Latitude: {this.state.lat} </div>;
+    //conditional rendering
+    if (this.state.errorMessage && !this.state.lat) {
+      return <div>Error: {this.state.errorMessage}</div>;
+    }
+
+    if (!this.state.errorMessage && this.state.lat) {
+      return <div>Latitude: {this.state.lat}</div>;
+    }
+
+    return <div>Loading...</div>;
   }
 }
 
