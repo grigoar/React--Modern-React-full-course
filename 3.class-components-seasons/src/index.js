@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import SeasonDisplay from "./SeasonDisplay";
+import Spinner from "./Spinner";
 
 // const App = () => {
 // window.navigator.geolocation.getCurrentPosition(
@@ -12,12 +14,20 @@ import ReactDOM from "react-dom";
 //23.	Rules of Class Components: -Must be a JavaScript Class ; -Must extend(subclass) React.Component; -Must define a ‘render’ method that returns some amount of JSX
 class App extends React.Component {
   //first block of code that is called when the component is initialized
-  constructor(props) {
-    super(props);
+  //   constructor(props) {
+  //     super(props);
 
-    //initialize the state object
-    //THIS IS THE ONLY TIME we do direct assignment to this.state
-    this.state = { lat: null, errorMessage: "" };
+  //     //initialize the state object
+  //     //THIS IS THE ONLY TIME we do direct assignment to this.state
+  //     this.state = { lat: null, errorMessage: "" };
+  //   }
+
+  //other way to do state initializing
+  state = { lat: null, errorMessage: "" };
+
+  componentDidMount() {
+    //initial data loading
+    // console.log("My component was rendered to the screen");
     //async call
     window.navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -35,11 +45,6 @@ class App extends React.Component {
     );
   }
 
-  componentDidMount() {
-    //initial data loading
-    console.log("My component was rendered to the screen");
-  }
-
   componentDidUpdate() {
     //any time that the component is reloading itself
     console.log("My componetn was just updated - it rerendered");
@@ -49,18 +54,24 @@ class App extends React.Component {
     //is we want to do some cleanup when we don't to show the component anymore
   }
 
-  //React says we have to define render!!
-  render() {
+  //making a helper method
+  renderContent() {
     //conditional rendering
     if (this.state.errorMessage && !this.state.lat) {
       return <div>Error: {this.state.errorMessage}</div>;
     }
 
     if (!this.state.errorMessage && this.state.lat) {
-      return <div>Latitude: {this.state.lat}</div>;
+      return <SeasonDisplay lat={this.state.lat} />;
     }
 
-    return <div>Loading...</div>;
+    // return <Spinner message="Please accept location request" />;
+    return <Spinner message="Please accept location request" />;
+  }
+
+  //React says we have to define render!!
+  render() {
+    return <div className="border red">{this.renderContent()}</div>;
   }
 }
 
@@ -68,3 +79,17 @@ ReactDOM.render(<App />, document.querySelector("#root"));
 
 //----------------Structuring Apps with Class-Based Compoentns
 //----------------State in React Components
+//----------------Components Methods lifecycle
+
+// class UserForm extends React.Component {
+//   render() {
+//     return (
+//       <form>
+//         <label>Enter a username:</label>
+//         <input />
+//       </form>
+//     );
+//   }
+// }
+
+// ReactDOM.render(<UserForm />, document.querySelector("#root"));
