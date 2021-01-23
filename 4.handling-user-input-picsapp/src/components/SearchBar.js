@@ -13,17 +13,29 @@ class SearchBar extends React.Component {
 
   state = { term: "" };
 
+  onFormSubmit(event) {
+    event.preventDefault();
+
+    this.props.onSubmitParent(this.state.term);
+  }
+  //because the arrow function don't have a this keyword the this is bind to the class instance
+  // onFormSubmit = (event) => {
+  //   event.preventDefault();
+  //   console.log(this.state.term);
+  // };
+
   render() {
     //Control elements
+    // console.log(this.state.term.length);
     return (
       <div className="ui segment">
-        <form className="ui form">
+        <form onSubmit={(e) => this.onFormSubmit(e)} className="ui  form">
           <div className="field">
             <label>Image Search</label>
             <input
               type="text"
               value={this.state.term}
-              onChange={(e) => this.setState({ term: e.target.value.toUpperCase() })}
+              onChange={(e) => this.setState({ term: e.target.value })}
               onClick={this.onInputClick}
             ></input>
           </div>
