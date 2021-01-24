@@ -8,3 +8,4 @@ package-lock.json
 /jsx/node_modules/
 *.env
 youtube.js
+api.js

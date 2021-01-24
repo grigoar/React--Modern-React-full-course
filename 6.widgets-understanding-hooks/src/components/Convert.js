@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { API_KEY } from "./api";
 
 const Convert = ({ language, text }) => {
   const [translated, setTranslated] = useState("");
   const [debouncedText, setDebouncedText] = useState(text);
-
+  // console.log(API_KEY);
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedText(text);
@@ -16,6 +17,7 @@ const Convert = ({ language, text }) => {
   }, [text]);
 
   useEffect(() => {
+    // console.log(API_KEY);
     const doTranslation = async () => {
       const { data } = await axios.post(
         "https://translation.googleapis.com/language/translate/v2",
@@ -24,7 +26,7 @@ const Convert = ({ language, text }) => {
           params: {
             q: debouncedText,
             target: language.value,
-            key: "AIzaSyCHUCmpR7cT_yDFHC98CZJy2LTms-IwDlM",
+            key: API_KEY,
           },
         }
       );
