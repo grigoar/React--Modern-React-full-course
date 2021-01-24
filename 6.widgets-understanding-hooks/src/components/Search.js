@@ -3,6 +3,7 @@ import axios from "axios";
 
 const Search = () => {
   const [term, setTerm] = useState("programming");
+  const [debouncedTerm, setDebouncedTerm] = useState(term);
   const [results, setResults] = useState([]);
   //   const [termTwo, setTermTwo] = useState("");
 
@@ -10,21 +11,16 @@ const Search = () => {
   //   console.log(results);
 
   useEffect(() => {
-    // console.log("Initial render or term was changed");
-    // return () => {
-    //   console.log("cleanup");
-    // };
+    const timerId = setTimeout(() => {
+      setDebouncedTerm(term);
+    }, 1000);
+    //if the user update the term the return function is called the the timer is canceled
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [term]);
 
-    //how to run async function in useEffect V3-using promises
-    // axios.get("url").then((response) => {
-    //   console.log(response.data);
-    // });
-
-    //how to run async function in useEffect V2-using IFFI
-    // (async () => {
-    //   await axios.get("url");
-    // })();
-    //how to run async function in useEffect V1
+  useEffect(() => {
     const search = async () => {
       const { data } = await axios.get("https://en.wikipedia.org/w/api.php", {
         params: {
@@ -32,31 +28,64 @@ const Search = () => {
           list: "search",
           origin: "*",
           format: "json",
-          srsearch: term,
+          srsearch: debouncedTerm,
         },
       });
 
       setResults(data.query.search);
     };
 
-    if (term && !results.length) {
-      search();
-    } else {
-      const timeoutId = setTimeout(() => {
-        if (term) {
-          search();
-        }
-      }, 500);
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    }
+    search();
+  }, [debouncedTerm]);
 
-    // console.log("I only use first time '[]'");
-    // console.log("I run at initial render and after at every render ' '" );
-    // console.log("Run after every rerender if data has changed since last render '[term]'");
-  }, [term]);
-  //   }, [term, termTwo]);
+  //   useEffect(() => {
+  //     // console.log("Initial render or term was changed");
+  //     // return () => {
+  //     //   console.log("cleanup");
+  //     // };
+
+  //     //how to run async function in useEffect V3-using promises
+  //     // axios.get("url").then((response) => {
+  //     //   console.log(response.data);
+  //     // });
+
+  //     //how to run async function in useEffect V2-using IFFI
+  //     // (async () => {
+  //     //   await axios.get("url");
+  //     // })();
+  //     //how to run async function in useEffect V1
+  //     const search = async () => {
+  //       const { data } = await axios.get("https://en.wikipedia.org/w/api.php", {
+  //         params: {
+  //           action: "query",
+  //           list: "search",
+  //           origin: "*",
+  //           format: "json",
+  //           srsearch: term,
+  //         },
+  //       });
+
+  //       setResults(data.query.search);
+  //     };
+
+  //     if (term && !results.length) {
+  //       search();
+  //     } else {
+  //       const timeoutId = setTimeout(() => {
+  //         if (term) {
+  //           search();
+  //         }
+  //       }, 500);
+  //       return () => {
+  //         clearTimeout(timeoutId);
+  //       };
+  //     }
+
+  //     // console.log("I only use first time '[]'");
+  //     // console.log("I run at initial render and after at every render ' '" );
+  //     // console.log("Run after every rerender if data has changed since last render '[term]'");
+  //   }, [term, results.length]);
+  //   //   }, [term, termTwo]);
 
   const renderedResults = results.map((result) => {
     return (
