@@ -3,36 +3,24 @@ import SearchBar from "./SearchBar";
 import youtube from "../apis/youtube";
 import VideoList from "./VideoList";
 import VideoDetail from "./VideoDetail";
+import useVideo from "../hooks/useVideos";
+import useVideos from "../hooks/useVideos";
 
 const App = () => {
   // state = { videos: [], selectedVideo: null };
-  const [videos, setVideos] = useState([]);
+
+  const [videos, search] = useVideos("buildings");
+
   const [selectedVideo, setSelectedVideo] = useState(null);
 
   useEffect(() => {
-    onTermSubmit("recommended");
-  }, []);
+    setSelectedVideo(videos[0]);
+  }, [videos]);
+  //
 
-  const onTermSubmit = async (term) => {
-    // console.log(term);
-    const response = await youtube.get("/search", {
-      params: {
-        q: term,
-      },
-    });
-
-    // this.setState({ videos: response.data.items, selectedVideo: response.data.items[0] });
-    setVideos(response.data.items);
-    setSelectedVideo(response.data.items[0]);
-  };
-
-  {
-    /* <VideoList onVideoSelect={(video) => setSelectedVideo(video)} videos={videos} /> */
-    //== <VideoList onVideoSelect={setSelectedVideo} videos={videos} />
-  }
   return (
     <div className="ui container">
-      <SearchBar onFormSubmit={onTermSubmit} />
+      <SearchBar onFormSubmit={search} />
       <div className="ui grid">
         <div className="ui row">
           <div className="eleven wide column">
@@ -48,3 +36,7 @@ const App = () => {
 };
 
 export default App;
+
+//Challenge
+// import usePosts from "./usePosts";
+// const posts = usePosts();
