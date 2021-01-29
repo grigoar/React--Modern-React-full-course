@@ -3,6 +3,8 @@ import Accordion from "./components/Accordion";
 import Search from "./components/Search";
 import Dropdown from "./components/Dropdown";
 import Translate from "./components/Translate";
+import Route from "./components/Route";
+import Header from "./components/Header";
 
 const items = [
   {
@@ -34,14 +36,61 @@ const options = [
   },
 ];
 
+//classic way of doing this
+// const showAccordion = () => {
+//   if (window.location.pathname === "/") {
+//     return <Accordion items={items} />;
+//   }
+// };
+
+// const showList = () => {
+//   if (window.location.pathname === "/list") {
+//     return <Search />;
+//   }
+// };
+
+// const showDropdown = () => {
+//   if (window.location.pathname === "/dropdown") {
+//     return <Translate />;
+//   }
+// };
+
+// const showTranslate = () => {
+//   if (window.location.pathname === "/translate") {
+//     return <Translate />;
+//   }
+// };
+
+// const showComponent = (route, component) =>{
+//   return window.location.pathname===route ?component :null;
+// }
+
 export default () => {
   const [selected, setSelected] = useState(options[0]);
   const [showDropdown, setShowDropdown] = useState(true);
 
   return (
+    //component from another JSX component children //Acordeon
     <div>
       <br></br>
-      <Translate />
+      <Header></Header>
+      <Route path="/">
+        <Accordion items={items}></Accordion>
+      </Route>
+      <Route path="/list">
+        <Search></Search>
+      </Route>
+      <Route path="/dropdown">
+        <Dropdown
+          label="Select a color"
+          options={options}
+          onSelectedChange={setSelected}
+          selected={selected}
+        />
+      </Route>
+      <Route path="/translate">
+        <Translate />
+      </Route>
     </div>
   );
 };
