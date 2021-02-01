@@ -1,11 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchPosts, addPost } from "../actions";
+import { fetchPosts, addPost, fetchPostsAndUsers } from "../actions";
 import UserHeader from "./UserHeader";
 
 class PostList extends React.Component {
   componentDidMount() {
-    this.props.fetchPosts();
+    // this.props.fetchPosts();
+    this.props.fetchPostsAndUsers();
     // this.props.addPost();
   }
 
@@ -39,4 +40,4 @@ const mapStateToProps = (state) => {
 };
 
 //we don't have mapstatetoprops so we send the null so that we don't have any data to sore in the state
-export default connect(mapStateToProps, { fetchPosts, addPost })(PostList);
+export default connect(mapStateToProps, { fetchPostsAndUsers })(PostList);
