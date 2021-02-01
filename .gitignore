@@ -9,3 +9,4 @@ package-lock.json
 *.env
 youtube.js
 api.js
+api-key.js
