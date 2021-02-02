@@ -19,6 +19,28 @@
       "title": "My original Stream",
       "description": "The main stream description",
       "id": 4
+    },
+    {
+      "title": "I created my stream",
+      "description": "This was make by grigtest123",
+      "userId": "101454948152489652738",
+      "id": 5
+    },
+    {
+      "title": "unexpected behaviour",
+      "description": "Now the patch method works",
+      "userId": "101454948152489652738",
+      "id": 6
+    },
+    {
+      "title": "changed",
+      "description": "deleted id and userID when using a put request instead of patch",
+      "id": 7
+    },
+    {
+      "title": "me streaming from component reuse",
+      "description": "The stream will be refactoring",
+      "id": 8
     }
   ]
 }
